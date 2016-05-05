@@ -13,6 +13,7 @@
 #include <fstream>
 #include <iostream>
 #include <math.h>
+#include <string>
 #include "Qr.h"
 #include "DenseMatrix.h"
 #include "UpTriMatrix.h"
@@ -35,21 +36,21 @@ int main(int argc, char *argv[])
   ***********************/
   if (argc > 1)
   {
-    mesh_size = argv[1];
+    mesh_size = std::stoi(argv[1]);
   }
   else
   {
     cerr << "ARGUMENT ERROR - Requires one argument for filepath" << endl;
     exit(-1);
   }
-  
+
   // Prepare matricies
-  x[k] = DenseMatrix<double>(mesh_size);
+  A = DenseMatrix<double>(mesh_size);
 
   // Populate matrix
-  for (auto i = 0u; i < matrix_size; i++)
+  for (auto i = 0u; i < mesh_size; i++)
   {
-    for (auto j = 0u; j < matrix_size; j++)
+    for (auto j = 0u; j < mesh_size; j++)
     {
       // Border conditions
       if (j == 0 || j == mesh_size || i == 0 || i == mesh_size)
