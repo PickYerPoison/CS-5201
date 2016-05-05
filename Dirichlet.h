@@ -7,6 +7,10 @@
 
   Class: Dirichlet
   Stores data and functionality for solving the Dirichlet problem for a PDE.
+
+  Template parameter T is expected to have the following overloaded:
+    -T, T += T, T + T, T - T, T * T, T / T
+    T = T, T == T, T != T
  *****************************************************************************/
 
 #ifndef DIRICHLET_H_INCLUDED
@@ -34,6 +38,7 @@ public:
   Dirichlet();
 
   /** DESTRUCTOR **/
+  ~Dirichlet();
 };
 
 #endif // DIRICHLET_H_INCLUDED
