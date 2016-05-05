@@ -1,2 +1,4 @@
-# Code Blocks project file
+# Code Blocks
 *.cbp
+/bin
+/obj
