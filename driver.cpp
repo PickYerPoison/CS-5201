@@ -51,7 +51,15 @@ int main(int argc, char *argv[])
   {
     for (auto j = 0u; j < matrix_size; j++)
     {
-      // Do magic
+      // Border conditions
+      if (j == 0 || j == mesh_size || i == 0 || i == mesh_size)
+      {
+        // Do magic
+      }
+      else // Center conditions
+      {
+        // Do more magic
+      }
     }
   }
 
