@@ -1,11 +1,13 @@
 /*****************************************************************************
  * Author:     Brian Catanzaro
+ *             Graham Netherton
  * Username :  bpchyd
+ *             grncp5
  * Class:      CS5201
- * Assignment: 6
+ * Assignment: 7
  * File:       driver.cpp
 
-  Purpose: To find the eigenvalues of the passed matricies
+  Purpose: To solve the differential equation
  *****************************************************************************/
 
 #include <fstream>
@@ -13,7 +15,6 @@
 #include <math.h>
 #include "Qr.h"
 #include "DenseMatrix.h"
-#include "DiagMatrix.h"
 #include "UpTriMatrix.h"
 
 using std::cin;
@@ -25,19 +26,16 @@ using std::string;
 int main(int argc, char *argv[])
 {
   // Variables
-  const unsigned int SAFETY = 1000; // Maximum iterations
-  const unsigned int NUM_MATRICIES = 2; // Number of matricies to test
-  unsigned int matrix_size; // The size of the target matrix
-  string file_path; // Provided file path
+  unsigned int mesh_size; // The size of the target matrix
   Qr<double> solve; // Solver for matricies
-  DenseMatrix<double> x[NUM_MATRICIES]; // Matrix to be solved
+  DenseMatrix<double> A; // Matrix to be solved
 
-  /******************************
-  * 1. Create Vectors from file *
-  *******************************/
+  /**********************
+  * 1. Create Matricies *
+  ***********************/
   if (argc > 1)
   {
-    file_path = argv[1];
+    mesh_size = argv[1];
   }
   else
   {
@@ -45,50 +43,22 @@ int main(int argc, char *argv[])
     exit(-1);
   }
 
-  std::ifstream file_data(file_path);
-  if (!file_data.is_open())
+  // Prepare matricies
+  x[k] = DenseMatrix<double>(mesh_size);
+
+  // Populate matrix
+  for (auto i = 0u; i < matrix_size; i++)
   {
-    cerr << "FILE ERROR - Bad file path" << endl;
-    exit(-1);
-  }
-  else // use the file
-  {
-    for (auto k = 0u; k < NUM_MATRICIES; k++)
+    for (auto j = 0u; j < matrix_size; j++)
     {
-      // Check for size of matrix
-      if (!(file_data >> matrix_size && matrix_size > 2))
-      {
-        cerr << "FILE ERROR - Cannot parse file or too few elements "
-             << "in entry" << endl;
-        exit(-1);
-      }
-
-      // Prepare matrix
-      x[k] = DenseMatrix<double>(matrix_size);
-
-      // Populate matrix
-      for (auto i = 0u; i < matrix_size; i++)
-      {
-        for (auto j = 0u; j < matrix_size; j++)
-        {
-          if (!(file_data >> x[k][j][i]))
-          {
-            cerr << "FILE ERROR - Cannot parse file or too few elements "
-                 << "in entry" << endl;
-            exit(-1);
-          }
-        }
-      }
+      // Do magic
     }
-
-    // Close file
-    file_data.close();
   }
 
  /*************************************
   * 2. Perform functions on Matricies *
   *************************************/
-  // Misc tests
+  /* Misc tests
   UpTriMatrix<int> ut1 = UpTriMatrix<int>(4);
   UpTriMatrix<int> ut2 = UpTriMatrix<int>(4);
   DiagMatrix<int> d1 = DiagMatrix<int>(4);
@@ -157,7 +127,7 @@ int main(int argc, char *argv[])
       cout << x[k][i][i] << " ";
     }
     cout << endl;
-  }
+  }*/
 
   return 0;
 }
