@@ -1,4 +1,11 @@
 # Code Blocks
 *.cbp
+*.layout
 /bin
 /obj
+
+# Executable files
+*.exe
+
+# Built files
+*.o
