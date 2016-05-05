@@ -28,6 +28,7 @@ int main(int argc, char *argv[])
 {
   // Variables
   unsigned int mesh_size; // The size of the target matrix
+  unsigned int matrix_size; // (mesh_size - 1)^2
   Qr<double> solve; // Solver for matricies
   DenseMatrix<double> A; // Matrix to be solved
 
@@ -37,6 +38,7 @@ int main(int argc, char *argv[])
   if (argc > 1)
   {
     mesh_size = std::stoi(argv[1]);
+    matrix_size = (mesh_size - 1) * (mesh_size - 1);
   }
   else
   {
@@ -45,24 +47,36 @@ int main(int argc, char *argv[])
   }
 
   // Prepare matricies
-  A = DenseMatrix<double>(mesh_size);
+  A = DenseMatrix<double>(matrix_size);
 
   // Populate matrix
-  for (auto i = 0u; i < mesh_size; i++)
+  for (auto i = 0u; i < matrix_size; i++)
   {
-    for (auto j = 0u; j < mesh_size; j++)
+      A[i][i] = 1;
+
+    // Right adjacent
+    if (i % (mesh_size - 1) != 0)
     {
-      // Border conditions
-      if (j == 0 || j == mesh_size || i == 0 || i == mesh_size)
-      {
-        // Do magic
-      }
-      else // Center conditions
-      {
-        // Do more magic
-      }
+      A[i][i - 1] = -(1.0 / mesh_size);
     }
+    // Left adjacent
+    if ((i + 1) % (mesh_size - 1) != 0)
+    {
+      A[i][i + 1] = -(1.0 / mesh_size);
+    }
+    // Bottom adjacent
+    if (i < matrix_size - (mesh_size - 1))
+    {
+      A[i][i + (mesh_size - 1)] = -(1.0 / mesh_size);
+    }
+    if (i >= mesh_size - 1)
+    {
+      A[i][i - (mesh_size - 1)] = -(1.0 / mesh_size);
+    }
+
   }
+
+  cout << A;
 
   return 0;
 }
