@@ -28,10 +28,10 @@ using std::string;
 int main()
 {
   // Variables
-  unsigned int mesh_size; // The size of the target matrix
-  unsigned int matrix_size; // (mesh_size - 1)^2
-//  Qr<double> solve; // Solver for matrices
-  DenseMatrix<double> A; // Matrix to be solved
+//  unsigned int mesh_size; // The size of the target matrix
+//  unsigned int matrix_size; // (mesh_size - 1)^2
+////  Qr<double> solve; // Solver for matrices
+//  DenseMatrix<double> A; // Matrix to be solved
 
   /**********************
   * 1. Create Matrices *
@@ -42,48 +42,13 @@ int main()
   string ssss;
   cin >> ssss;
 
-  mesh_size = 3;
-  matrix_size = (mesh_size - 1) * (mesh_size - 1);
-  A = DenseMatrix<double>(matrix_size);
-  cout << A << endl;
-
-  for (auto i = 0u; i < matrix_size; i++)
-  {
-    for (auto j = 0u; j < matrix_size; j++)
-    {
-      A[i][j] = 0
-    }
-  }
-
-  // Populate matrix
-  for (auto i = 0u; i < matrix_size; i++)
-  {
-    A[i][i] = 1;
-
-    // Right adjacent
-    if (i % (mesh_size - 1) != 0)
-    {
-      A[i][i - 1] = -(1.0 / mesh_size);
-    }
-    // Left adjacent
-    if ((i + 1) % (mesh_size - 1) != 0)
-    {
-      A[i][i + 1] = -(1.0 / mesh_size);
-    }
-    // Bottom adjacent
-    if (i < matrix_size - (mesh_size - 1))
-    {
-      A[i][i + (mesh_size - 1)] = -(1.0 / mesh_size);
-    }
-    if (i >= mesh_size - 1)
-    {
-      A[i][i - (mesh_size - 1)] = -(1.0 / mesh_size);
-    }
-  }
-  cout << A << endl;
-
   Dirichlet<double> d(0.0, 1.0, 0.0, 1.0);
-  d.build(3);
+  d.setBottomBoundary([](const double& x)->double { return 1 - x * x; } );
+  d.setTopBoundary([](const double& x)->double { return 2 * (1 - x * x); } );
+  d.setLeftBoundary([](const double& y)->double { return 1 + y * y; } );
+  d.setRightBoundary([](const double& y)->double { return 0; } );
+  d.setRHS([](const double& x, const double& y)->double { return -2 * (x * x + y * y); } );
+  d.build(4);
 
   return 0;
 }

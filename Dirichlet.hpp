@@ -129,16 +129,16 @@ T Dirichlet<T>::getAtBoundary(const T& x, const T& y) const
 template<typename T>
 void Dirichlet<T>::build(const int mesh_size)
 {
-//  if (!m_isLeftBoundarySet)
-//    throw invalid_argument("Dirichlet ERROR: Left boundary not set.");
-//  if (!m_isRightBoundarySet)
-//    throw invalid_argument("Dirichlet ERROR: Right boundary not set.");
-//  if (!m_isTopBoundarySet)
-//    throw invalid_argument("Dirichlet ERROR: Top boundary not set.");
-//  if (!m_isBottomBoundarySet)
-//    throw invalid_argument("Dirichlet ERROR: Bottom boundary not set.");
-//  if (!m_isRHSSet)
-//    throw invalid_argument("Dirichlet ERROR: RHS not set.");
+  if (!m_isLeftBoundarySet)
+    throw invalid_argument("Dirichlet ERROR: Left boundary not set.");
+  if (!m_isRightBoundarySet)
+    throw invalid_argument("Dirichlet ERROR: Right boundary not set.");
+  if (!m_isTopBoundarySet)
+    throw invalid_argument("Dirichlet ERROR: Top boundary not set.");
+  if (!m_isBottomBoundarySet)
+    throw invalid_argument("Dirichlet ERROR: Bottom boundary not set.");
+  if (!m_isRHSSet)
+    throw invalid_argument("Dirichlet ERROR: RHS not set.");
   if (mesh_size <= 0)
     throw invalid_argument("Dirichlet ERROR: Mesh size less than 1.");
 
@@ -160,6 +160,14 @@ void Dirichlet<T>::build(const int mesh_size)
   std::cout << "h: " << h << std::endl;
 
   // build matrix A
+  for (auto i = 0u; i < matrix_size; i++)
+  {
+    for (auto j = 0u; j < matrix_size; j++)
+    {
+      A[i][j] = 0;
+    }
+  }
+
   for (auto i = 0u; i < matrix_size; i++)
   {
     /* Build A */
@@ -193,15 +201,38 @@ void Dirichlet<T>::build(const int mesh_size)
     x[i] = Point<T>(xVal, yVal);
 
     /* Build b */
-    // gather vector of points for this section
-//    Vector<Point<T>> points(4u);
-//    points[0] = Point<T>(xVal + h, yVal);
-//    points[1] =
+    // instantiate sum for this row of b
+    T sum = 0;
+
+    // add in all values that are on the boundary
+    if (xVal - h == m_xMin)
+      sum += getAtBoundary(m_xMin, yVal);
+    if (xVal + h == m_xMax)
+      sum += getAtBoundary(m_xMax, yVal);
+    if (yVal - h == m_yMin)
+      sum += getAtBoundary(xVal, m_yMin);
+    if (yVal + h == m_yMax)
+      sum += getAtBoundary(xVal, m_yMax);
+
+    // multiply by h
+    sum *= h;
+
+    // subtract modified RHS
+    sum -= ((h * h) / mesh_size) * (m_RHS(xVal, yVal));
+
+    // set to row value
+    b[i] = sum;
   }
 
-  std::cout << A << std::endl;
-  std::cout << std::endl;
-  std::cout << x << std::endl;
+
+//  std::cout << A << std::endl;
+//  std::cout << std::endl;
+//  std::cout << x << std::endl;
+
+  // load into member variables
+  m_A = DenseMatrix<T>(A);
+  m_x = Vector<Point<T>>(x);
+  m_b = Vector<T>(b);
 }
 
 template <typename T>

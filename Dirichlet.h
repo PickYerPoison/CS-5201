@@ -110,8 +110,8 @@ public:
   void setYMin(const T& yMin);
   void setYMax(const T& yMax);
 
-  /* Boundary output function */
-  // DESC: Returns a point on the boundary.
+  /* Boundary output functions */
+  // DESC: Returns the value at a point on the boundary.
   // PRE: Point (x, y) is on a boundary (throws std::invalid_argument)
   //      Appropriate boundary function is set (throws std::invalid_argument)
   // POST: Returns the resulting T value.
