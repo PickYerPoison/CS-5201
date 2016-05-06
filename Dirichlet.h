@@ -19,6 +19,24 @@
 #include "DenseMatrix.h"
 #include "Vector.h"
 
+template <typename T>
+struct Point;
+
+template <typename T>
+std::ostream& operator<<(std::ostream& os, const Point<T>& rhs);
+
+template<typename T>
+struct Point
+{
+  T x;
+  T y;
+
+  Point() : Point(0, 0) {}
+  Point(const T& x) : Point(x, x) {}
+  Point(const T& x, const T& y) : x(x), y(y) {}
+  friend std::ostream& operator<<<T>(std::ostream& os, const Point& rhs);
+};
+
 template<typename T>
 class Dirichlet
 {
@@ -47,8 +65,8 @@ private:
 
   /* Matrices and vectors for Ax = b */
   DenseMatrix<T> m_A;
-  Vector<T> m_x;
-  DenseMatrix<T> m_b;
+  Vector<Point<T>> m_x;
+  Vector<T> m_b;
 
 public:
   /* Constructors */
@@ -91,6 +109,13 @@ public:
   void setXMax(const T& xMax);
   void setYMin(const T& yMin);
   void setYMax(const T& yMax);
+
+  /* Boundary output function */
+  // DESC: Returns a point on the boundary.
+  // PRE: Point (x, y) is on a boundary (throws std::invalid_argument)
+  //      Appropriate boundary function is set (throws std::invalid_argument)
+  // POST: Returns the resulting T value.
+  T getAtBoundary(const T& x, const T& y) const;
 
   /* Experimental functions
      The names, arguments, usage, and existence of the following

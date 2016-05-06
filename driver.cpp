@@ -25,30 +25,25 @@ using std::cerr;
 using std::endl;
 using std::string;
 
-int main(int argc, char *argv[])
+int main()
 {
   // Variables
   unsigned int mesh_size; // The size of the target matrix
   unsigned int matrix_size; // (mesh_size - 1)^2
-  Qr<double> solve; // Solver for matrices
+//  Qr<double> solve; // Solver for matrices
   DenseMatrix<double> A; // Matrix to be solved
 
   /**********************
   * 1. Create Matrices *
   ***********************/
-  if (argc > 1)
-  {
-    mesh_size = std::stoi(argv[1]);
-  }
-  else
-  {
-    cerr << "ARGUMENT ERROR - mesh size not specified" << endl;
-//    exit(-1);
-    mesh_size = 4;
-  }
-  matrix_size = (mesh_size - 1) * (mesh_size - 1);
 
-  // Prepare matrices
+  cout << "Start?" << endl;
+
+  string ssss;
+  cin >> ssss;
+
+  mesh_size = 3;
+  matrix_size = (mesh_size - 1) * (mesh_size - 1);
   A = DenseMatrix<double>(matrix_size);
 
   // Populate matrix
@@ -76,10 +71,10 @@ int main(int argc, char *argv[])
       A[i][i - (mesh_size - 1)] = -(1.0 / mesh_size);
     }
   }
+  cout << A << endl;
 
-  string ssss;
-  cin >> ssss;
-  cout << A;
+  Dirichlet<double> d(0.0, 1.0, 0.0, 1.0);
+  d.build(3);
 
   return 0;
 }
