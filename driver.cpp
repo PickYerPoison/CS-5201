@@ -29,30 +29,31 @@ int main(int argc, char *argv[])
   // Variables
   unsigned int mesh_size; // The size of the target matrix
   unsigned int matrix_size; // (mesh_size - 1)^2
-  Qr<double> solve; // Solver for matricies
+  Qr<double> solve; // Solver for matrices
   DenseMatrix<double> A; // Matrix to be solved
 
   /**********************
-  * 1. Create Matricies *
+  * 1. Create Matrices *
   ***********************/
   if (argc > 1)
   {
     mesh_size = std::stoi(argv[1]);
-    matrix_size = (mesh_size - 1) * (mesh_size - 1);
   }
   else
   {
-    cerr << "ARGUMENT ERROR - Requires one argument for filepath" << endl;
-    exit(-1);
+    cerr << "ARGUMENT ERROR - mesh size not specified" << endl;
+//    exit(-1);
+    mesh_size = 4;
   }
+  matrix_size = (mesh_size - 1) * (mesh_size - 1);
 
-  // Prepare matricies
+  // Prepare matrices
   A = DenseMatrix<double>(matrix_size);
 
   // Populate matrix
   for (auto i = 0u; i < matrix_size; i++)
   {
-      A[i][i] = 1;
+    A[i][i] = 1;
 
     // Right adjacent
     if (i % (mesh_size - 1) != 0)
@@ -73,9 +74,10 @@ int main(int argc, char *argv[])
     {
       A[i][i - (mesh_size - 1)] = -(1.0 / mesh_size);
     }
-
   }
 
+  string ssss;
+  cin >> ssss;
   cout << A;
 
   return 0;

@@ -7,5 +7,6 @@
 # Executable files
 *.exe
 
-# Built files
+# Build files
 *.o
+*.depend

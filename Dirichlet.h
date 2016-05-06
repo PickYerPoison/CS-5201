@@ -16,15 +16,17 @@
 #ifndef DIRICHLET_H_INCLUDED
 #define DIRICHLET_H_INCLUDED
 
+#include "DenseMatrix.h"
+
 template<typename T>
 class Dirichlet
 {
 private:
   /* Boundary functions */
-  T (*m_boundaryLeft)(const T& y);
-  T (*m_boundaryRight)(const T& y);
-  T (*m_boundaryTop)(const T& x);
-  T (*m_boundaryBottom)(const T& x);
+  T (*m_leftBoundary)(const T& y);
+  T (*m_rightBoundary)(const T& y);
+  T (*m_topBoundary)(const T& x);
+  T (*m_bottomBoundary)(const T& x);
 
   /* "Boundary functions set" flags */
   bool m_isLeftBoundarySet = false;
@@ -32,11 +34,11 @@ private:
   bool m_isTopBoundarySet = false;
   bool m_isBottomBoundarySet = false;
 
-  /* Uxx + Uyy = g(x, y) */
-  T (*m_g)(const T& x, const T& y);
+  /* The right-hand side of Uxx + Uyy = g(x, y) */
+  T (*m_RHS)(const T& x, const T& y);
 
-  /* "g(x, y) function set" flag */
-  bool m_isGSet = false;
+  /* "RHS function set" flag */
+  bool m_isRHSSet = false;
 
   /* Boundaries for x and y */
   T m_xMin, m_xMax;
@@ -54,7 +56,10 @@ public:
   // POST: The object is initialized across the given range.
   Dirichlet(const T& xMin, const T& xMax, const T& yMin, const T& yMax);
 
-  /* DESTRUCTOR */
+  /* Destructor */
+  // DESC: Releases any memory held.
+  // PRE: None.
+  // POST: Any memory held has been released.
   ~Dirichlet();
 
   /* Boundary function mutators */
@@ -66,6 +71,12 @@ public:
   void setTopBoundary(T (f)(const T& x));
   void setBottomBoundary(T (f)(const T& x));
 
+  /* RHS function mutator */
+  // DESC: Allows the RHS function to be modified.
+  // PRE: None.
+  // POST: The RHS function is set.
+  void setRHS(T (f)(const T& x, const T& y));
+
   /* Range mutators */
   // DESC: Allows the range to be modified.
   // PRE: xMin <= xMax, yMin <= yMax (throws std::invalid_argument)
@@ -75,5 +86,7 @@ public:
   void setYMin(const T& yMin);
   void setYMax(const T& yMax);
 };
+
+#include "Dirichlet.hpp"
 
 #endif // DIRICHLET_H_INCLUDED
