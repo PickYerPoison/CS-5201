@@ -45,6 +45,15 @@ int main()
   mesh_size = 3;
   matrix_size = (mesh_size - 1) * (mesh_size - 1);
   A = DenseMatrix<double>(matrix_size);
+  cout << A << endl;
+
+  for (auto i = 0u; i < matrix_size; i++)
+  {
+    for (auto j = 0u; j < matrix_size; j++)
+    {
+      A[i][j] = 0
+    }
+  }
 
   // Populate matrix
   for (auto i = 0u; i < matrix_size; i++)
