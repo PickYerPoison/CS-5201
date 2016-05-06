@@ -17,6 +17,7 @@
 #include "Qr.h"
 #include "DenseMatrix.h"
 #include "UpTriMatrix.h"
+#include "Dirichlet.h"
 
 using std::cin;
 using std::cout;

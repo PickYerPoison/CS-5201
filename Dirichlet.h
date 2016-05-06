@@ -8,7 +8,7 @@
   Class: Dirichlet
   Stores data and functionality for solving the Dirichlet problem for a PDE.
 
-  Template parameter T is expected to have the following overloaded:
+  Template parameter T is expected to have the following operators overloaded:
     -T, T += T, T + T, T - T, T * T, T / T
     T = T, T == T, T != T
  *****************************************************************************/
@@ -17,6 +17,7 @@
 #define DIRICHLET_H_INCLUDED
 
 #include "DenseMatrix.h"
+#include "Vector.h"
 
 template<typename T>
 class Dirichlet
@@ -43,6 +44,11 @@ private:
   /* Boundaries for x and y */
   T m_xMin, m_xMax;
   T m_yMin, m_yMax;
+
+  /* Matrices and vectors for Ax = b */
+  DenseMatrix<T> m_A;
+  Vector<T> m_x;
+  DenseMatrix<T> m_b;
 
 public:
   /* Constructors */
@@ -85,6 +91,17 @@ public:
   void setXMax(const T& xMax);
   void setYMin(const T& yMin);
   void setYMax(const T& yMax);
+
+  /* Experimental functions
+     The names, arguments, usage, and existence of the following
+     functions is subject to change. This category should be removed
+     before submission. */
+
+  // DESC: Builds A, x, and b with the given mesh size.
+  // PRE: All functions are set (throws std::invalid_argument)
+  //      mesh_size > 0 (throws std::invalid_argument)
+  // POST: A, x, and b are loaded with their proper values.
+  void build(const int mesh_size);
 };
 
 #include "Dirichlet.hpp"

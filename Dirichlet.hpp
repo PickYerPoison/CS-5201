@@ -3,16 +3,10 @@
 
 using std::invalid_argument;
 
+/* Constructors */
 template<typename T>
-Dirichlet<T>::Dirichlet()
-{
-  m_xMin = 0; m_xMax = 1;
-  m_yMin = 0; m_yMax = 1;
-}
+Dirichlet<T>::Dirichlet() : Dirichlet(0, 1, 0, 1) { }
 
-// DESC: Range constructor.
-// PRE: xMin <= xMax, yMin <= yMax (throws std::invalid_argument)
-// POST: The object is initialized across the given range.
 template<typename T>
 Dirichlet<T>::Dirichlet(const T& xMin, const T& xMax, const T& yMin, const T& yMax)
 {
@@ -26,9 +20,6 @@ Dirichlet<T>::Dirichlet(const T& xMin, const T& xMax, const T& yMin, const T& yM
 }
 
 /* Destructor */
-// DESC: Releases any memory held.
-// PRE: None.
-// POST: Any memory held has been released.
 template<typename T>
 Dirichlet<T>::~Dirichlet()
 {
@@ -36,9 +27,6 @@ Dirichlet<T>::~Dirichlet()
 }
 
 /* Boundary function mutators */
-// DESC: Allows the boundary functions to be modified.
-// PRE: None.
-// POST: The appropriate boundary function is set.
 template<typename T>
 void Dirichlet<T>::setLeftBoundary(T (f)(const T& y))
 {
@@ -65,9 +53,6 @@ void Dirichlet<T>::setBottomBoundary(T (f)(const T& x))
 }
 
 /* RHS function mutator */
-// DESC: Allows the RHS function to be modified.
-// PRE: None.
-// POST: The RHS function is set.
 template<typename T>
 void Dirichlet<T>::setRHS(T (f)(const T& x, const T& y))
 {
@@ -76,9 +61,6 @@ void Dirichlet<T>::setRHS(T (f)(const T& x, const T& y))
 }
 
 /* Range mutators */
-// DESC: Allows the range to be modified.
-// PRE: xMin <= xMax, yMin <= yMax (throws std::invalid_argument)
-// POST: The range is adjusted.
 template<typename T>
 void Dirichlet<T>::setXMin(const T& xMin)
 {
@@ -106,6 +88,36 @@ void Dirichlet<T>::setYMax(const T& yMax)
   if (m_yMin > yMax)
     throw invalid_argument("Dirichlet ERROR: Tried to set yMax below yMin.");
   m_yMax = yMax;
+}
+
+/* Experimental functions */
+template<typename T>
+void Dirichlet<T>::build(const int mesh_size)
+{
+  if (!m_isLeftBoundarySet)
+    throw invalid_argument("Dirichlet ERROR: Left boundary not set.");
+  if (!m_isRightBoundarySet)
+    throw invalid_argument("Dirichlet ERROR: Right boundary not set.");
+  if (!m_isTopBoundarySet)
+    throw invalid_argument("Dirichlet ERROR: Top boundary not set.");
+  if (!m_isBottomBoundarySet)
+    throw invalid_argument("Dirichlet ERROR: Bottom boundary not set.");
+  if (!m_isRHSSet)
+    throw invalid_argument("Dirichlet ERROR: RHS not set.");
+  if (mesh_size <= 0)
+    throw invalid_argument("Dirichlet ERROR: Mesh size less than 1.");
+
+  if (mesh_size == 1)
+  {
+    // some kind of special case when matrices are size zero?
+  }
+
+  // build matrices
+  m_A = DenseMatrix<T>(mesh_size - 1);
+  m_x = Vector<T>(mesh_size - 1);
+  m_b = DenseMatrix<T>(mesh_size - 1);
+
+  // build A, x, b
 }
 
 #endif // DIRICHLET_HPP_INCLUDED
