@@ -7,7 +7,7 @@
  * Assignment: 7
  * File:       driver.cpp
 
-  Purpose: To solve the differential equation
+  Purpose: To decompose the differential equation
  *****************************************************************************/
 
 #include <fstream>
@@ -28,6 +28,7 @@ using std::string;
 
 int main(int argc, char *argv[])
 {
+  const unsigned int SAFETY = 1000;
   unsigned int mesh_size;
 
   if (argc > 1)
@@ -40,7 +41,7 @@ int main(int argc, char *argv[])
     exit(-1);
   }
 
-  Qr<double> solve;
+  Qr<double> decompose;
   GaussianElimination<double> back_sub;
   DenseMatrix<double> matrix(mesh_size);
   Vector<double> simple_values((mesh_size - 1) * (mesh_size - 1));
@@ -57,9 +58,39 @@ int main(int argc, char *argv[])
   d.setRHS([](const double& x, const double& y)->double { return -2 * (x * x + y * y); } );
   d.build(mesh_size);
 
-  solve(d.A());
+  decompose(d.A());
   qr_values = d.b();
-  matrix = solve.R();
+  matrix = d.A();
+
+  for (auto iter_count = 1u; iter_count < SAFETY; iter_count++)
+  {
+    decompose(matrix);
+    const BaseMatrix<double>* r = &decompose.R();
+    const BaseMatrix<double>* q = &decompose.Q();
+    matrix = *r * *q;
+
+    // Check for early convergence
+    bool converge = false;
+    for (auto i = 0u; i < matrix.width(); i++)
+    {
+      for (auto j = 0u; j < matrix.width(); j++)
+      {
+        if (i < j)
+        {
+          converge = (matrix[i][j] == 0);
+          if (!converge)
+          {
+            i = j = matrix.width();
+          }
+        }
+      }
+    }
+    if (converge)
+    {
+      iter_count = SAFETY;
+    }
+  }
+
   back_sub(matrix, qr_values);
   cout << "QR Method:" << endl << qr_values << endl << endl;
 
