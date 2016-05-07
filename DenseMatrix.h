@@ -308,6 +308,9 @@ DenseMatrix<T> operator*(const T& lhs, const DenseMatrix<T>& rhs) { return rhs *
 template <typename T>
 DenseMatrix<T> operator*(const BaseMatrix<T>& lhs, const BaseMatrix<T>& rhs);
 
+template <typename T>
+Vector<T> operator*(const BaseMatrix<T>& lhs, const Vector<T>& rhs);
+
 #include "DenseMatrix.hpp"
 
 #endif // DENSEMATRIX_H

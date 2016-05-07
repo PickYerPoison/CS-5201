@@ -285,3 +285,24 @@ DenseMatrix<T> operator*(const BaseMatrix<T>& lhs, const BaseMatrix<T>& rhs)
 
   return new_matrix;
 }
+
+template <typename T>
+Vector<T> operator*(const BaseMatrix<T>& lhs, const Vector<T>& rhs)
+{
+  Vector<T> new_vector = Vector<T>(lhs.height());
+
+  // Make sure matricies are able to be multiplied
+  if (lhs.width() == rhs.size())
+  {
+    for (auto i = 0u; i < lhs.height(); i++)
+    {
+      new_vector[i] = 0;
+      for (auto j = 0u; j < rhs.size(); j++)
+      {
+        new_vector[i] += lhs[i][j] * rhs[i];
+      }
+    }
+  }
+
+  return new_vector;
+}
