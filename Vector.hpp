@@ -1,9 +1,10 @@
 /*****************************************************************************
  * Author:     Brian Catanzaro
+ *             Graham Netherton
  * Username :  bpchyd
+ *             grncp5
  * Class:      CS5201
- * Assignment: 6
- * File:       Vector.hpp
+ * Assignment: 7
 
   Implementation for a basic Vector class found in Vector.h.
   A standard representation of a vector with compatible linear algebra

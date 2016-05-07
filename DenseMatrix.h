@@ -1,8 +1,10 @@
 /*****************************************************************************
  * Author:     Brian Catanzaro
- * Username:   bpchyd
+ *             Graham Netherton
+ * Username :  bpchyd
+ *             grncp5
  * Class:      CS5201
- * Assignment: 6
+ * Assignment: 7
  * File:       DenseMatrix.h
 
   Class: DenseMatrix

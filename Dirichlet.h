@@ -1,8 +1,10 @@
 /*****************************************************************************
- * Author:     Brian Catanzaro (bpchyd)
- *             Graham Netherton (grncp5)
+ * Author:     Brian Catanzaro
+ *             Graham Netherton
+ * Username :  bpchyd
+ *             grncp5
  * Class:      CS5201
- * Assignment: 7 (Final)
+ * Assignment: 7
  * File:       Dirichlet.h
 
   Class: Dirichlet

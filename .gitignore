@@ -7,10 +7,12 @@
 
 # Executable files
 *.exe
+driver
 
 # Build files
 *.o
 *.depend
+dependencies
 
 # Word document files
 *.doc

@@ -1,3 +1,12 @@
+/*****************************************************************************
+ * Author:     Brian Catanzaro
+ *             Graham Netherton
+ * Username :  bpchyd
+ *             grncp5
+ * Class:      CS5201
+ * Assignment: 7
+ */
+
 #ifndef DIRICHLET_HPP_INCLUDED
 #define DIRICHLET_HPP_INCLUDED
 

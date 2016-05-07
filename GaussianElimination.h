@@ -1,8 +1,10 @@
 /*****************************************************************************
  * Author:     Brian Catanzaro
+ *             Graham Netherton
  * Username :  bpchyd
+ *             grncp5
  * Class:      CS5201
- * Assignment: 4
+ * Assignment: 7
  * File:       Gaussian_Elimination.h
 
   Class: Gaussian_Elimination

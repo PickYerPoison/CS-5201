@@ -1,8 +1,10 @@
 /*****************************************************************************
  * Author:     Brian Catanzaro
+ *             Graham Netherton
  * Username :  bpchyd
+ *             grncp5
  * Class:      CS5201
- * Assignment: 6
+ * Assignment: 7
  * File:       DenseMatrix.hpp
 
   Implementation for a basic Matrix class found in DenseMatrix.h.

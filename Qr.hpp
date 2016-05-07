@@ -1,10 +1,11 @@
 /*****************************************************************************
  * Author:     Brian Catanzaro
+ *             Graham Netherton
  * Username :  bpchyd
+ *             grncp5
  * Class:      CS5201
- * Assignment: 6
- * File:       Qr.hpp
-
+ * Assignment: 7
+ 
   Implementation for Qr class in Qr.h.
   Performs QR decomposition on the passed Matricies.
  *****************************************************************************/
