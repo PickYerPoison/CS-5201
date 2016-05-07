@@ -89,7 +89,7 @@ int main(int argc, char *argv[])
     }
     if (converge)
     {
-      iter_count = SAFETY;
+      break;
     }
   }
 
@@ -98,6 +98,32 @@ int main(int argc, char *argv[])
   // cout << qr_values instead of matrix in line below and fill qr values with what x is
   // before you remove return 0
   cout << "QR Method:" << endl << matrix << endl << endl;
+  cout << endl;
+  int mwidth = matrix.width();
+  Vector<double> solutions(mwidth);
+  for (int i = 0; i < mwidth; i++)
+  {
+    solutions[i] = d.b()[i] / matrix[i][i];
+  }
+  cout << "Deltas:" << endl;
+  for (auto i = 0u; i < true_values.size(); i++)
+  {
+//    double x = (i % (mesh_size - 1) + 1) * h;
+//    double y = (static_cast<int>(i / (mesh_size - 1)) + 1) * h;
+    double x = d.x()[i].x;
+    double y = d.x()[i].y;
+    true_values[i] = (1 - x * x) * (1 + y * y);
+  }
+  cout << "Absolute error: ";
+  for (int i =  0; i < mwidth; i++)
+  {
+    cout << solutions[i] - true_values[i] << " ";
+  }
+  cout << endl << "Relative error: ";
+  for (int i =  0; i < mwidth; i++)
+  {
+    cout << "%" << (int)(((solutions[i] - true_values[i]) / true_values[i]) * 100) << " ";
+  }
   return 0;
 
   simple_values = d.b();
