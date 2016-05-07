@@ -150,7 +150,7 @@ void Dirichlet<T>::build(const unsigned int mesh_size)
   }
 
   // initialize variables and matrices
-  int matrix_size = (mesh_size - 1) * (mesh_size - 1);
+  unsigned int matrix_size = (mesh_size - 1) * (mesh_size - 1);
   T h = 1.0 / mesh_size;
   DenseMatrix<T> A(matrix_size);
   Vector<Point<T>> x(matrix_size);
@@ -161,15 +161,15 @@ void Dirichlet<T>::build(const unsigned int mesh_size)
   //std::cout << "h: " << h << std::endl;
 
   // build matrix A
-  for (int i = 0; i < matrix_size; i++)
+  for (unsigned int i = 0; i < matrix_size; i++)
   {
-    for (int j = 0; j < matrix_size; j++)
+    for (unsigned int j = 0; j < matrix_size; j++)
     {
       A[i][j] = 0;
     }
   }
 
-  for (int i = 0; i < matrix_size; i++)
+  for (unsigned int i = 0u; i < matrix_size; i++)
   {
     /* Build A */
     A[i][i] = 1;
