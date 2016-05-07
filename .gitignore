@@ -1,6 +1,7 @@
 # Code Blocks
 *.cbp
 *.layout
+*.sav
 /bin
 /obj
 
