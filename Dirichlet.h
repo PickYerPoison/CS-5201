@@ -142,7 +142,7 @@ public:
   // PRE: All functions are set (throws std::invalid_argument)
   //      mesh_size > 0 (throws std::invalid_argument)
   // POST: A, x, and b are loaded with their proper values.
-  void build(const int mesh_size);
+  void build(const unsigned int mesh_size);
 };
 
 #include "Dirichlet.hpp"

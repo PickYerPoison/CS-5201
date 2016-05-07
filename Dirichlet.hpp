@@ -127,7 +127,7 @@ T Dirichlet<T>::getAtBoundary(const T& x, const T& y) const
 
 /* Experimental functions */
 template<typename T>
-void Dirichlet<T>::build(const int mesh_size)
+void Dirichlet<T>::build(const unsigned int mesh_size)
 {
   if (!m_isLeftBoundarySet)
     throw invalid_argument("Dirichlet ERROR: Left boundary not set.");
@@ -142,7 +142,7 @@ void Dirichlet<T>::build(const int mesh_size)
   if (mesh_size <= 0)
     throw invalid_argument("Dirichlet ERROR: Mesh size less than 1.");
 
-  std::cout << "Mesh size: " << mesh_size << std::endl;
+  //std::cout << "Mesh size: " << mesh_size << std::endl;
 
   if (mesh_size == 1)
   {
@@ -156,8 +156,8 @@ void Dirichlet<T>::build(const int mesh_size)
   Vector<Point<T>> x(matrix_size);
   Vector<T> b(matrix_size);
   unsigned int yNum = 0;
-  std::cout <<  "Matrix size: " <<  matrix_size << std::endl;
-  std::cout << "h: " << h << std::endl;
+  //std::cout <<  "Matrix size: " <<  matrix_size << std::endl;
+  //std::cout << "h: " << h << std::endl;
 
   // build matrix A
   for (auto i = 0u; i < matrix_size; i++)

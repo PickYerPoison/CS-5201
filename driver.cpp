@@ -26,37 +26,67 @@ using std::cerr;
 using std::endl;
 using std::string;
 
-int main()
+int main(int argc, char *argv[])
 {
-  cout << "Start?" << endl;
+  unsigned int mesh_size;
 
-  string ssss;
-  cin >> ssss;
+  if (argc > 1)
+  {
+    mesh_size = std::stoi(argv[1]);
+  }
+  else
+  {
+    cerr << "ARGUMENT ERROR - Requires one argument for mesh size" << endl;
+    exit(-1);
+  }
 
   Qr<double> solve;
   GaussianElimination<double> back_sub;
-  DenseMatrix<double> matrix(4);
-  Vector<double> augmented(9);
+  DenseMatrix<double> matrix(mesh_size);
+  Vector<double> simple_values((mesh_size - 1) * (mesh_size - 1));
+  Vector<double> qr_values((mesh_size - 1) * (mesh_size - 1));
+  Vector<double> true_values((mesh_size - 1) * (mesh_size - 1));
   Dirichlet<double> d(0.0, 1.0, 0.0, 1.0);
+  double h = 1.0 / mesh_size;
   d.setBottomBoundary([](const double& x)->double { return 1 - x * x; } );
   d.setTopBoundary([](const double& x)->double { return 2 * (1 - x * x); } );
   d.setLeftBoundary([](const double& y)->double { return 1 + y * y; } );
-  d.setRightBoundary([](const double& y)->double { return 0; } );
+  d.setRightBoundary([](const double& y)->double { return 0 * y; } );
   d.setRHS([](const double& x, const double& y)->double { return -2 * (x * x + y * y); } );
-  d.build(4);
+  d.build(mesh_size);
 
   solve(d.A());
-  augmented = d.b();
+  qr_values = d.b();
   matrix = solve.R();
-  back_sub(matrix, augmented);
-  cout << "QR Method:" << endl << augmented << endl;
+  back_sub(matrix, qr_values);
+  cout << "QR Method:" << endl << qr_values << endl << endl;
 
-  augmented = d.b();
+  simple_values = d.b();
   matrix = d.A();
-  back_sub(matrix, augmented);
-  cout << "Simple Gaussian:" << endl << augmented << endl;
+  back_sub(matrix, simple_values);
+  cout << "Simple Gaussian:" << endl << simple_values << endl << endl;
 
-  cout << "True Values:" << endl << augmented << endl;
+  for (auto i = 0u; i < true_values.size(); i++)
+  {
+    double x = (i % (mesh_size - 1) + 1) * h;
+    double y = (static_cast<int>(i / (mesh_size - 1)) + 1) * h;
+    true_values[i] = (1 - x * x) * (1 + y * y);
+  }
+  cout << "True Values:" << endl << true_values << endl << endl;
+
+  cout << "QR Deltas:" << endl;
+  for (auto i = 0u; i < true_values.size(); i++)
+  {
+    cout << (qr_values[i] - true_values[i]) << " ";
+  }
+  cout << endl << endl;
+
+  cout << "Gaussian Deltas:" << endl;
+  for (auto i = 0u; i < true_values.size(); i++)
+  {
+    cout << (simple_values[i] - true_values[i]) << " ";
+  }
+  cout << endl << endl;
 
   return 0;
 }
