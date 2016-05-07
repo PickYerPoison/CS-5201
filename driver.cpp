@@ -36,8 +36,12 @@ int main(int argc, char *argv[])
   }
   else
   {
-    cerr << "ARGUMENT ERROR - Requires one argument for mesh size" << endl;
-    exit(-1);
+    string getMeshSize;
+    cout << "Enter mesh size: ";
+    cin >> getMeshSize;
+    mesh_size = std::stoi(getMeshSize);
+//    cerr << "ARGUMENT ERROR - Requires one argument for mesh size" << endl;
+//    exit(-1);
   }
 
   Qr<double> solve;
