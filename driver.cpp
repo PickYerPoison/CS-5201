@@ -28,7 +28,6 @@ using std::string;
 
 int main(int argc, char *argv[])
 {
-  const unsigned int SAFETY = 1000;
   unsigned int mesh_size;
 
   if (argc > 1)
@@ -62,69 +61,11 @@ int main(int argc, char *argv[])
   d.setRHS([](const double& x, const double& y)->double { return -2 * (x * x + y * y); } );
   d.build(mesh_size);
 
-  qr_values = d.b();
-  matrix = d.A();
-  for (auto iter_count = 1u; iter_count < SAFETY; iter_count++)
-  {
-    decompose(matrix);
-    const BaseMatrix<double>* r = &decompose.R();
-    const BaseMatrix<double>* q = &decompose.Q();
-    matrix = *r * *q;
-
-    // Check for early convergence
-    bool converge = false;
-    for (auto i = 0u; i < matrix.width(); i++)
-    {
-      for (auto j = 0u; j < matrix.width(); j++)
-      {
-        if (i < j)
-        {
-          converge = (matrix[i][j] == 0);
-          if (!converge)
-          {
-            i = j = matrix.width();
-          }
-        }
-      }
-    }
-    if (converge)
-    {
-      break;
-    }
-  }
-
-  // Matrix contains the eigenvalues
-  // return 0 is here just to prevent it from getting angry that other math isn't done
-  // cout << qr_values instead of matrix in line below and fill qr values with what x is
-  // before you remove return 0
-  cout << "QR Method:" << endl << matrix << endl << endl;
-  cout << endl;
-  int mwidth = matrix.width();
-  Vector<double> solutions(mwidth);
-  for (int i = 0; i < mwidth; i++)
-  {
-    solutions[i] = d.b()[i] / matrix[i][i];
-  }
-  cout << "Deltas:" << endl;
-  for (auto i = 0u; i < true_values.size(); i++)
-  {
-//    double x = (i % (mesh_size - 1) + 1) * h;
-//    double y = (static_cast<int>(i / (mesh_size - 1)) + 1) * h;
-    double x = d.x()[i].x;
-    double y = d.x()[i].y;
-    true_values[i] = (1 - x * x) * (1 + y * y);
-  }
-  cout << "Absolute error: ";
-  for (int i =  0; i < mwidth; i++)
-  {
-    cout << solutions[i] - true_values[i] << " ";
-  }
-  cout << endl << "Relative error: ";
-  for (int i =  0; i < mwidth; i++)
-  {
-    cout << "%" << (int)(((solutions[i] - true_values[i]) / true_values[i]) * 100) << " ";
-  }
-  return 0;
+  decompose(d.A());
+  matrix = decompose.R();
+  qr_values = (~decompose.Q()) * d.b();
+  back_sub(matrix, qr_values);
+  cout << "QR Method:" << endl << qr_values << endl << endl;
 
   simple_values = d.b();
   matrix = d.A();
