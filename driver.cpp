@@ -37,6 +37,8 @@ int main()
   GaussianElimination<double> back_sub;
   DenseMatrix<double> matrix(4);
   Vector<double> augmented(9);
+
+  // create Dirichlet object
   Dirichlet<double> d(0.0, 1.0, 0.0, 1.0);
   d.setBottomBoundary([](const double& x)->double { return 1 - x * x; } );
   d.setTopBoundary([](const double& x)->double { return 2 * (1 - x * x); } );

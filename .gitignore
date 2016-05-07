@@ -1,7 +1,7 @@
 # Code Blocks
 *.cbp
 *.layout
-*.sav
+*.save
 /bin
 /obj
 
@@ -11,3 +11,17 @@
 # Build files
 *.o
 *.depend
+
+# Word documents
+*.doc
+*.docx
+
+# DIA files
+*.dia
+
+# Image files
+*.png
+*.jpg
+
+# PDF files
+*.pdf

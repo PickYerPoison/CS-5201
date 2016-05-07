@@ -142,33 +142,31 @@ void Dirichlet<T>::build(const int mesh_size)
   if (mesh_size <= 0)
     throw invalid_argument("Dirichlet ERROR: Mesh size less than 1.");
 
-  std::cout << "Mesh size: " << mesh_size << std::endl;
-
   if (mesh_size == 1)
   {
     // some kind of special case when matrices are size zero?
   }
 
   // initialize variables and matrices
-  unsigned int matrix_size = (mesh_size - 1) * (mesh_size - 1);
+  int matrix_size = (mesh_size - 1) * (mesh_size - 1);
   T h = 1.0 / mesh_size;
   DenseMatrix<T> A(matrix_size);
   Vector<Point<T>> x(matrix_size);
   Vector<T> b(matrix_size);
-  unsigned int yNum = 0;
+  int yNum = 0;
   std::cout <<  "Matrix size: " <<  matrix_size << std::endl;
   std::cout << "h: " << h << std::endl;
 
   // build matrix A
-  for (auto i = 0u; i < matrix_size; i++)
+  for (int i = 0; i < matrix_size; i++)
   {
-    for (auto j = 0u; j < matrix_size; j++)
+    for (int j = 0; j < matrix_size; j++)
     {
       A[i][j] = 0;
     }
   }
 
-  for (auto i = 0u; i < matrix_size; i++)
+  for (int i = 0; i < matrix_size; i++)
   {
     /* Build A */
     A[i][i] = 1;
