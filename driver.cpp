@@ -46,6 +46,8 @@ int main(int argc, char *argv[])
   Vector<double> simple_values((mesh_size - 1) * (mesh_size - 1));
   Vector<double> qr_values((mesh_size - 1) * (mesh_size - 1));
   Vector<double> true_values((mesh_size - 1) * (mesh_size - 1));
+
+  // create Dirichlet object
   Dirichlet<double> d(0.0, 1.0, 0.0, 1.0);
   double h = 1.0 / mesh_size;
   d.setBottomBoundary([](const double& x)->double { return 1 - x * x; } );
