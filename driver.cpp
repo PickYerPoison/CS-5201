@@ -90,5 +90,19 @@ int main(int argc, char *argv[])
   }
   cout << endl << endl;
 
+  cout << "% Error QR:" << endl;
+  for (auto i = 0u; i < true_values.size(); i++)
+  {
+    cout << "%" << ((true_values[i] - qr_values[i]) / true_values[i]) * 100 << " ";
+  }
+  cout << endl << endl;
+
+  cout << "% Error Gaussian:" << endl;
+  for (auto i = 0u; i < true_values.size(); i++)
+  {
+    cout << "%" << ((true_values[i] - simple_values[i]) / true_values[i]) * 100 << " ";
+  }
+  cout << endl << endl;
+
   return 0;
 }
