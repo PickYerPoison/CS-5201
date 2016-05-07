@@ -18,6 +18,10 @@ DenseMatrix<T>::DenseMatrix(const unsigned int width)
   for (auto i = 0u; i < this->m_width; i++)
   {
     this->m_data[i] = Vector<T>(width);
+    for (auto j = 0u; j < this->m_width; j++)
+    {
+      this->m_data[i][j] = 0;
+    }
   }
 }
 
@@ -94,17 +98,21 @@ DenseMatrix<T>& DenseMatrix<T>::operator=(const T& rhs)
 }
 
 template <typename T>
-DenseMatrix<T>& DenseMatrix<T>::operator=(const DenseMatrix<T>& rhs)
+DenseMatrix<T>& DenseMatrix<T>::operator=(const BaseMatrix<T>& rhs)
 {
   // Destroy old matrix
-  this->m_width = rhs.m_width;
+  this->m_width = rhs.width();
   delete[] this->m_data;
 
   // Create new matrix equal to rhs
   this->m_data = new Vector<T>[this->m_width];
   for (auto i = 0u; i < this->m_width; i++)
   {
-    this->m_data[i] = rhs[i];
+    this->m_data[i] = Vector<T>(this->m_width);
+    for (auto j = 0u; j < this->m_width; j++)
+    {
+      this->m_data[i][j] = rhs[i][j];
+    }
   }
 
   return *this;

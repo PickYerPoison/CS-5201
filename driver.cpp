@@ -18,6 +18,7 @@
 #include "DenseMatrix.h"
 #include "UpTriMatrix.h"
 #include "Dirichlet.h"
+#include "GaussianElimination.h"
 
 using std::cin;
 using std::cout;
@@ -27,21 +28,15 @@ using std::string;
 
 int main()
 {
-  // Variables
-//  unsigned int mesh_size; // The size of the target matrix
-//  unsigned int matrix_size; // (mesh_size - 1)^2
-////  Qr<double> solve; // Solver for matrices
-//  DenseMatrix<double> A; // Matrix to be solved
-
-  /**********************
-  * 1. Create Matrices *
-  ***********************/
-
   cout << "Start?" << endl;
 
   string ssss;
   cin >> ssss;
 
+  Qr<double> solve;
+  GaussianElimination<double> back_sub;
+  DenseMatrix<double> matrix(4);
+  Vector<double> augmented(9);
   Dirichlet<double> d(0.0, 1.0, 0.0, 1.0);
   d.setBottomBoundary([](const double& x)->double { return 1 - x * x; } );
   d.setTopBoundary([](const double& x)->double { return 2 * (1 - x * x); } );
@@ -49,6 +44,17 @@ int main()
   d.setRightBoundary([](const double& y)->double { return 0; } );
   d.setRHS([](const double& x, const double& y)->double { return -2 * (x * x + y * y); } );
   d.build(4);
+
+  solve(d.A());
+  augmented = d.b();
+  matrix = solve.R();
+  back_sub(matrix, augmented);
+  cout << augmented << endl;
+
+  augmented = d.b();
+  matrix = d.A();
+  back_sub(matrix, augmented);
+  cout << augmented << endl;
 
   return 0;
 }

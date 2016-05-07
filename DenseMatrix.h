@@ -279,7 +279,7 @@ public:
   Vector<T>& operator[](const unsigned int index);
   const Vector<T>& operator[](const unsigned int index) const;
   DenseMatrix<T>& operator=(const T& rhs);
-  DenseMatrix<T>& operator=(const DenseMatrix<T>& rhs);
+  DenseMatrix<T>& operator=(const BaseMatrix<T>& rhs);
   DenseMatrix<T>& operator=(DenseMatrix<T>&& rhs);
   DenseMatrix<T>& operator+=(const DenseMatrix<T>& rhs);
   DenseMatrix<T>& operator-=(const DenseMatrix<T>& rhs) { return *this += -rhs; }

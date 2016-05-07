@@ -86,6 +86,22 @@ public:
   // POST: Any memory held has been released.
   ~Dirichlet();
 
+  /* Accessors */
+  // DESC: A viewing for m_A
+  // PRE: None.
+  // POST: The object m_A is returned
+  DenseMatrix<T> A() { return m_A; }
+
+  // DESC: A viewing for m_x
+  // PRE: None.
+  // POST: The object m_x is returned by value
+  Vector<Point<T>> x() { return m_x; }
+
+  // DESC: A viewing for m_b
+  // PRE: None.
+  // POST: The object m_b is returned by value
+  Vector<T> b() { return m_b; }
+
   /* Boundary function mutators */
   // DESC: Allows the boundary functions to be modified.
   // PRE: None.
