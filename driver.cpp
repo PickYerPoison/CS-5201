@@ -49,12 +49,14 @@ int main()
   augmented = d.b();
   matrix = solve.R();
   back_sub(matrix, augmented);
-  cout << augmented << endl;
+  cout << "QR Method:" << endl << augmented << endl;
 
   augmented = d.b();
   matrix = d.A();
   back_sub(matrix, augmented);
-  cout << augmented << endl;
+  cout << "Simple Gaussian:" << endl << augmented << endl;
+
+  cout << "True Values:" << endl << augmented << endl;
 
   return 0;
 }
