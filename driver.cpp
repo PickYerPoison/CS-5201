@@ -28,6 +28,7 @@ using std::string;
 
 int main(int argc, char *argv[])
 {
+  const unsigned int SAFETY = 1000;
   unsigned int mesh_size;
 
   if (argc > 1)
@@ -61,12 +62,43 @@ int main(int argc, char *argv[])
   d.setRHS([](const double& x, const double& y)->double { return -2 * (x * x + y * y); } );
   d.build(mesh_size);
 
-  decompose(d.A());
-  qr_values = ~decompose.Q() * d.b();
-  matrix = decompose.R();
-  back_sub(matrix, qr_values);
-  cout << "QR Method:" << endl << qr_values << endl << endl;
-  //cout << "QR METHOD:" << endl << (~decompose.Q() * d.b()) << endl << endl;
+  qr_values = d.b();
+  matrix = d.A();
+  for (auto iter_count = 1u; iter_count < SAFETY; iter_count++)
+  {
+    decompose(matrix);
+    const BaseMatrix<double>* r = &decompose.R();
+    const BaseMatrix<double>* q = &decompose.Q();
+    matrix = *r * *q;
+
+    // Check for early convergence
+    bool converge = false;
+    for (auto i = 0u; i < matrix.width(); i++)
+    {
+      for (auto j = 0u; j < matrix.width(); j++)
+      {
+        if (i < j)
+        {
+          converge = (matrix[i][j] == 0);
+          if (!converge)
+          {
+            i = j = matrix.width();
+          }
+        }
+      }
+    }
+    if (converge)
+    {
+      iter_count = SAFETY;
+    }
+  }
+
+  // Matrix contains the eigenvalues
+  // return 0 is here just to prevent it from getting angry that other math isn't done
+  // cout << qr_values instead of matrix in line below and fill qr values with what x is
+  // before you remove return 0
+  cout << "QR Method:" << endl << matrix << endl << endl;
+  return 0;
 
   simple_values = d.b();
   matrix = d.A();
