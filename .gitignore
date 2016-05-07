@@ -12,16 +12,16 @@
 *.o
 *.depend
 
-# Word documents
+# Word document files
 *.doc
 *.docx
 
 # DIA files
 *.dia
 
-# Image files
+# Images
 *.png
 *.jpg
 
-# PDF files
+# PDFs
 *.pdf
