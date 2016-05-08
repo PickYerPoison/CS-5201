@@ -1,10 +1,9 @@
 /*****************************************************************************
  * Author:     Brian Catanzaro
- *             Graham Netherton
  * Username :  bpchyd
- *             grncp5
  * Class:      CS5201
- * Assignment: 7
+ * Assignment: 6
+ * File:       Vector.hpp
 
   Implementation for a basic Vector class found in Vector.h.
   A standard representation of a vector with compatible linear algebra
@@ -86,7 +85,7 @@ T& Vector<T>::operator[](const unsigned int index)
 }
 
 template <typename T>
-const T& Vector<T>::operator[](const unsigned int index) const
+T Vector<T>::operator[](const unsigned int index) const
 {
   // Throws out_of_range exception if index can't refer to allocated space
   if (index >= m_size + m_zero_tolerance + m_zero_buffer)
@@ -97,7 +96,7 @@ const T& Vector<T>::operator[](const unsigned int index) const
   }
 
   // Return the data at the indexed location
-  return (index - m_zero_buffer < m_size) ? m_data[index - m_zero_buffer] : m_buffer;
+  return (index - m_zero_buffer < m_size) ? m_data[index - m_zero_buffer] : 0;
 }
 
 template <typename T>

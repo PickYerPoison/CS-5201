@@ -313,7 +313,7 @@ public:
 
   // Operators
   T& operator[](const unsigned int index);
-  const T& operator[](const unsigned int index) const;
+  T operator[](const unsigned int index) const;
   Vector<T>& operator=(const T rhs);
   Vector<T>& operator=(const Vector<T>& rhs);
   Vector<T>& operator=(Vector<T>&& rhs);
